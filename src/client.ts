@@ -19,8 +19,9 @@ export interface QueryRouterClientOpts {
   flavor: ISQLFlavor;
 }
 
-export class QueryRouterClient<T extends Partial<QueryRouterClientOpts>>
-  implements IQueryRouterClient
+export class QueryRouterClient<
+  T extends Partial<QueryRouterClientOpts> = QueryRouterClientOpts
+> implements IQueryRouterClient
 {
   constructor(protected opts: T & QueryRouterClientOpts) {}
 
