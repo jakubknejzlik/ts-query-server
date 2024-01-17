@@ -3,7 +3,7 @@ import {
   QueryCommand,
   TimestreamQueryClient,
 } from "@aws-sdk/client-timestream-query";
-import { AWSTimestreamFlavor, Q, SelectQuery } from "@jakub.knejzlik/ts-query";
+import { AWSTimestreamFlavor, SelectQuery } from "@jakub.knejzlik/ts-query";
 import { QueryRouterClient, QueryRouterClientOpts } from "./client";
 
 const timestreamQuery = new TimestreamQueryClient({ region: "eu-central-1" });

@@ -1,4 +1,4 @@
-import { ISQLFlavor, Q, SelectQuery } from "@jakub.knejzlik/ts-query";
+import { ISQLFlavor, SelectQuery } from "@jakub.knejzlik/ts-query";
 import {
   DeleteMutation,
   InsertMutation,
