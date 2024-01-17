@@ -10,7 +10,7 @@ interface QueryRouterClientMySQLOpts extends Partial<QueryRouterClientOpts> {
 
 export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientMySQLOpts> {
   constructor({ flavor, ...opts }: QueryRouterClientMySQLOpts) {
-    super({ flavor: Q.flavors.mysql, ...opts });
+    super({ flavor: flavor ?? Q.flavors.mysql, ...opts });
   }
 
   async executeQueries(queries: SelectQuery[]): Promise<any[]> {
