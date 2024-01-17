@@ -71,7 +71,8 @@ async function queryTimestream(queryString: string): Promise<any[]> {
   }
 }
 
-interface QueryRouterClientAWSTimestreamOpts extends QueryRouterClientOpts {
+interface QueryRouterClientAWSTimestreamOpts
+  extends Partial<QueryRouterClientOpts> {
   databaseName: string;
 }
 
