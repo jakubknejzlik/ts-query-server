@@ -17,7 +17,7 @@ export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientM
     const res = await executeQueries({
       databaseUrl: this.opts.databaseUrl,
       databaseName: this.opts.databaseName,
-      sqls: queries.map((query) => query.toSQL(Q.flavors.mysql)),
+      sqls: queries.map((query) => query.toSQL(this.opts.flavor)),
     });
     return res.results;
   }
