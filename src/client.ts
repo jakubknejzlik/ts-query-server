@@ -19,10 +19,11 @@ export interface QueryRouterClientOpts {
   flavor: ISQLFlavor;
 }
 
-export class QueryRouterClient<O = QueryRouterClientOpts>
+export class QueryRouterClient<T extends Partial<QueryRouterClientOpts>>
   implements IQueryRouterClient
 {
-  constructor(protected opts: O) {}
+  constructor(protected opts: T & QueryRouterClientOpts) {}
+
   executeQueries(queries: Query[]): Promise<any> {
     throw new Error("Method not implemented.");
   }

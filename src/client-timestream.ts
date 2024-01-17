@@ -17,6 +17,26 @@ class CustomAWSTimestreamFlavor extends AWSTimestreamFlavor {
   }
 }
 
+interface QueryRouterClientAWSTimestreamOpts
+  extends Partial<QueryRouterClientOpts> {
+  databaseName: string;
+}
+
+export class QueryRouterClientAWSTimestream extends QueryRouterClient<QueryRouterClientAWSTimestreamOpts> {
+  constructor({ flavor, ...opts }: QueryRouterClientAWSTimestreamOpts) {
+    super({
+      flavor: flavor ?? new CustomAWSTimestreamFlavor(opts.databaseName),
+      ...opts,
+    });
+  }
+
+  async executeQueries(queries: SelectQuery[]): Promise<any[]> {
+    return Promise.all(
+      queries.map((query) => queryTimestream(query.toSQL(this.opts.flavor)))
+    );
+  }
+}
+
 function parseDatum(columnType: string | undefined, datum: Datum): any {
   if (!datum.ScalarValue) {
     return null;
@@ -39,7 +59,6 @@ function parseDatum(columnType: string | undefined, datum: Datum): any {
 }
 
 async function queryTimestream(queryString: string): Promise<any[]> {
-  console.log("executing:", queryString);
   try {
     const command = new QueryCommand({ QueryString: queryString });
     const response = await timestreamQuery.send(command);
@@ -68,25 +87,5 @@ async function queryTimestream(queryString: string): Promise<any[]> {
   } catch (error) {
     console.error("Error querying Timestream:", error);
     throw error;
-  }
-}
-
-interface QueryRouterClientAWSTimestreamOpts
-  extends Partial<QueryRouterClientOpts> {
-  databaseName: string;
-}
-
-export class QueryRouterClientAWSTimestream extends QueryRouterClient<QueryRouterClientAWSTimestreamOpts> {
-  constructor({ flavor, ...opts }: QueryRouterClientAWSTimestreamOpts) {
-    super({
-      flavor: flavor ?? new CustomAWSTimestreamFlavor(opts.databaseName),
-      ...opts,
-    });
-  }
-
-  async executeQueries(queries: SelectQuery[]): Promise<any[]> {
-    return Promise.all(
-      queries.map((query) => queryTimestream(query.toSQL(this.opts.flavor)))
-    );
   }
 }

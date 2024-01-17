@@ -12,7 +12,7 @@ export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientM
   constructor({ flavor, ...opts }: QueryRouterClientMySQLOpts) {
     super({ flavor: Q.flavors.mysql, ...opts });
   }
-  // constructor(private databaseUrl: string, private databaseName: string) {}
+
   async executeQueries(queries: SelectQuery[]): Promise<any[]> {
     const res = await executeQueries({
       databaseUrl: this.opts.databaseUrl,
