@@ -3,12 +3,15 @@ import * as mysql from "mysql2/promise";
 import { URL } from "url";
 import { QueryRouterClient, QueryRouterClientOpts } from "./client";
 
-interface QueryRouterClientMySQLOpts extends QueryRouterClientOpts {
+interface QueryRouterClientMySQLOpts extends Partial<QueryRouterClientOpts> {
   databaseUrl: string;
   databaseName: string;
 }
 
 export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientMySQLOpts> {
+  constructor({ flavor, ...opts }: QueryRouterClientMySQLOpts) {
+    super({ flavor: Q.flavors.mysql, ...opts });
+  }
   // constructor(private databaseUrl: string, private databaseName: string) {}
   async executeQueries(queries: SelectQuery[]): Promise<any[]> {
     const res = await executeQueries({
