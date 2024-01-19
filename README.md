@@ -17,8 +17,8 @@ ts-query-server is an open-source library designed to seamlessly integrate with 
 
 ### Prerequisites
 
-- Node.js (version X or above)
-- TypeScript (version X or above)
+- Node.js (version 16 or above)
+- TypeScript (version 16 or above)
 - [ts-query](https://github.com/jakubknejzlik/ts-query) installed and configured
 
 ### Installation
@@ -26,48 +26,20 @@ ts-query-server is an open-source library designed to seamlessly integrate with 
 Install ts-query-server using npm:
 
 ```bash
-npm install ts-query-server
+npm install @jakub.knejzlik/ts-query-server
 ```
 
 Or using yarn:
 
 ```bash
-yarn add ts-query-server
+yarn add @jakub.knejzlik/ts-query-server
 ```
-
-### Usage
-
-Basic usage example:
-
-```typescript
-// TypeScript example code
-```
-
-## Documentation
-
-For detailed documentation, visit [Wiki](https://github.com/your-repo/ts-query-server/wiki) or [docs](link-to-documentation).
-
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Contact
-
-Your Name - [@YourTwitter](https://twitter.com/YourTwitter)
-
-Project Link: [https://github.com/your-repo/ts-query-server](https://github.com/your-repo/ts-query-server)
-
 ## Acknowledgements
 
-- [ts-query](https://github.com/your-ts-query-repo)
+- [ts-query](https://github.com/jakubknejzlik/ts-query)
 - [Other Project/Resource](#)
