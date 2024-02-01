@@ -76,10 +76,7 @@ async function queryTimestream(queryString: string): Promise<any[]> {
       row.Data?.forEach((datum, index) => {
         const info = columnInfo[index];
         if (info.Name) {
-          rowObject[info.Name] = parseDatum(
-            columnInfo[0].Type?.ScalarType,
-            datum
-          );
+          rowObject[info.Name] = parseDatum(info.Type?.ScalarType, datum);
         }
       });
       return rowObject;
