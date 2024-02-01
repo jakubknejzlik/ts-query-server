@@ -1,6 +1,6 @@
 {
   "name": "@jakub.knejzlik/ts-query-server",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "TypeScript library for executing SQL queries built with ts-query across diverse server environments.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
