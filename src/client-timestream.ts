@@ -46,7 +46,7 @@ function parseDatum(columnType: string | undefined, datum: Datum): any {
     case "VARCHAR":
       return datum.ScalarValue;
     case "BIGINT":
-      return BigInt(datum.ScalarValue);
+      return parseInt(datum.ScalarValue);
     case "DOUBLE":
       return parseFloat(datum.ScalarValue);
     case "BOOLEAN":
