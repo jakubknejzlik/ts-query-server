@@ -1,15 +1,11 @@
-import { ISQLFlavor, SelectQuery } from "@jakub.knejzlik/ts-query";
 import {
-  DeleteMutation,
-  InsertMutation,
-  UpdateMutation,
-} from "@jakub.knejzlik/ts-query/dist/Mutation";
+  ISQLFlavor,
+  ISequelizable,
+  ISerializable,
+} from "@jakub.knejzlik/ts-query";
+import { IMetadata } from "@jakub.knejzlik/ts-query/dist/interfaces";
 
-export type Query =
-  | SelectQuery
-  | InsertMutation
-  | UpdateMutation
-  | DeleteMutation;
+export interface Query extends ISequelizable, ISerializable, IMetadata {}
 
 export interface IQueryRouterClient<Result = any> {
   executeQueries(queries: Query[]): Promise<Result>;
