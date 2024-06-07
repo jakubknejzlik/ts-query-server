@@ -6,6 +6,7 @@ import { QueryRouterClient, QueryRouterClientOpts } from "./client";
 interface QueryRouterClientMySQLOpts extends Partial<QueryRouterClientOpts> {
   databaseUrl: string;
   databaseName: string;
+  poolOptions?: mysql.PoolOptions;
 }
 
 export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientMySQLOpts> {
@@ -14,10 +15,12 @@ export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientM
   }
 
   async executeQueries(queries: SelectQuery[]): Promise<any[]> {
+    const { databaseUrl, databaseName, poolOptions } = this.opts;
     const res = await executeQueries({
-      databaseUrl: this.opts.databaseUrl,
-      databaseName: this.opts.databaseName,
+      databaseUrl,
+      databaseName,
       sqls: queries.map((query) => query.toSQL(this.opts.flavor)),
+      poolOptions,
     });
     return res.results;
   }
@@ -27,6 +30,7 @@ export interface ExecuteQueriesOpts {
   databaseUrl: string;
   databaseName: string;
   sqls: string[];
+  poolOptions?: mysql.PoolOptions;
 }
 
 export interface ExecuteQueryResult {
@@ -41,10 +45,15 @@ function createPoolKey(databaseUrl: string): string {
   return hostname || "";
 }
 
-function getPool(poolKey: string, databaseUrl: string): mysql.Pool {
+function getPool(
+  poolKey: string,
+  databaseUrl: string,
+  poolOptions?: mysql.PoolOptions
+): mysql.Pool {
   if (!poolCache[poolKey]) {
     poolCache[poolKey] = mysql.createPool({
       uri: databaseUrl,
+      ...poolOptions,
       multipleStatements: true,
     });
   }
@@ -52,21 +61,22 @@ function getPool(poolKey: string, databaseUrl: string): mysql.Pool {
 }
 
 export const executeQueries = async (
-  event: ExecuteQueriesOpts
+  opts: ExecuteQueriesOpts
 ): Promise<ExecuteQueryResult> => {
-  if (event.sqls.length === 0) return { results: [] };
+  const { poolOptions, databaseName, sqls } = opts;
+  if (sqls.length === 0) return { results: [] };
 
-  const databaseUrl = event.databaseUrl
+  const databaseUrl = opts.databaseUrl
     .replace("{{MYSQL_USER}}", process.env.MYSQL_USER || "")
     .replace("{{MYSQL_PASSWORD}}", process.env.MYSQL_PASSWORD || "");
   const poolKey = createPoolKey(databaseUrl);
-  const pool = getPool(poolKey, databaseUrl);
+  const pool = getPool(poolKey, databaseUrl, poolOptions);
   let connection: mysql.PoolConnection | null = null;
 
   try {
     connection = await pool.getConnection();
 
-    const sql = `USE \`${event.databaseName}\`;\n` + event.sqls.join(";\n");
+    const sql = `USE \`${databaseName}\`;\n` + sqls.join(";\n");
     const [results] = await connection.query({ sql });
 
     return { results: (results as any[]).slice(1) };
