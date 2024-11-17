@@ -31,9 +31,12 @@ export class QueryRouterClientAWSTimestream extends QueryRouterClient<QueryRoute
   }
 
   async executeQueries(queries: SelectQuery[]): Promise<any[]> {
-    return Promise.all(
-      queries.map((query) => queryTimestream(query.toSQL(this.opts.flavor)))
+    return this.executeRawQueries(
+      queries.map((query) => query.toSQL(this.opts.flavor))
     );
+  }
+  executeRawQueries(queries: string[]): Promise<any> {
+    return Promise.all(queries.map((query) => queryTimestream(query)));
   }
 }
 
