@@ -9,6 +9,7 @@ export interface Query extends ISequelizable, ISerializable, IMetadata {}
 
 export interface IQueryRouterClient<Result = any> {
   executeQueries(queries: Query[]): Promise<Result>;
+  executeRawQueries(queries: string[]): Promise<Result>;
 }
 
 export interface QueryRouterClientOpts {
@@ -21,7 +22,10 @@ export class QueryRouterClient<
 {
   constructor(protected opts: T & QueryRouterClientOpts) {}
 
-  executeQueries(queries: Query[]): Promise<any> {
+  executeQueries(_: Query[]): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  executeRawQueries(_: string[]): Promise<any> {
     throw new Error("Method not implemented.");
   }
 }

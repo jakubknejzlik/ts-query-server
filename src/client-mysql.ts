@@ -15,11 +15,16 @@ export class QueryRouterClientMySQL extends QueryRouterClient<QueryRouterClientM
   }
 
   async executeQueries(queries: SelectQuery[]): Promise<any[]> {
+    return this.executeRawQueries(
+      queries.map((query) => query.toSQL(this.opts.flavor))
+    );
+  }
+  async executeRawQueries(queries: string[]): Promise<any[]> {
     const { databaseUrl, databaseName, poolOptions } = this.opts;
     const res = await executeQueries({
       databaseUrl,
       databaseName,
-      sqls: queries.map((query) => query.toSQL(this.opts.flavor)),
+      sqls: queries,
       poolOptions,
     });
     return res.results;
