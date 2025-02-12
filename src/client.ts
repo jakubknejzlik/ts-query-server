@@ -3,7 +3,10 @@ import {
   ISequelizable,
   ISerializable,
 } from "@jakub.knejzlik/ts-query";
-import { IMetadata } from "@jakub.knejzlik/ts-query/dist/interfaces";
+import {
+  IMetadata,
+  ISequelizableOptions,
+} from "@jakub.knejzlik/ts-query/dist/interfaces";
 
 export interface Query extends ISequelizable, ISerializable, IMetadata {}
 
@@ -14,6 +17,7 @@ export interface IQueryRouterClient<Result = any> {
 
 export interface QueryRouterClientOpts {
   flavor: ISQLFlavor;
+  sequelizeOptions?: ISequelizableOptions;
 }
 
 export class QueryRouterClient<
@@ -22,8 +26,12 @@ export class QueryRouterClient<
 {
   constructor(protected opts: T & QueryRouterClientOpts) {}
 
-  executeQueries(_: Query[]): Promise<any> {
-    throw new Error("Method not implemented.");
+  executeQueries(queries: Query[]): Promise<any> {
+    return this.executeRawQueries(
+      queries.map((query) =>
+        query.toSQL(this.opts.flavor, this.opts.sequelizeOptions)
+      )
+    );
   }
   executeRawQueries(_: string[]): Promise<any> {
     throw new Error("Method not implemented.");
